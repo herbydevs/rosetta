@@ -15,6 +15,12 @@
             <li>🏛 History</li>
             <li>🎨 Art</li>
             <li>💭 Philosophy</li>
+            <li>🗣 Languages</li>
+            <li>🔬 Science</li>
+            <li>🌍 Culture</li>
+            <li>🎭 Theater</li>
+            <li>🎶 Music</li>
+            <li>✍ Poetry</li>
           </ul>
         </aside>
   
