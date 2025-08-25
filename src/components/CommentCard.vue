@@ -1,59 +1,100 @@
 <template>
-  <div class="card">
-    <h2 class="card-title">{{ thread.title }}</h2>
-    <p class="card-snippet">{{ thread.snippet }}</p>
-    <button class="card-button" @click="goToThread(thread.id)">Read More</button>
-
+  <div class="thread-card" @click="goToThread">
+    <h1 class="thread title">{{ thread.title }}</h1>
+    <div class="thread-info">
+      <p class="thread description">{{ thread.description }}</p>
+      <p class="comments">💬 {{ thread.comments }}</p>
+      <p class="created-at">Created at: {{ thread.createdAt }}</p>
+      <p class="upvotes">👍 {{ thread.upvotes }}</p>
+    </div>
   </div>
 </template>
 
-<script setup>
-import { useRouter } from "vue-router"
-
-const router = useRouter()
-
-const threads = [
-  { id: 1, title: "How to Train Discipline", snippet: "A deep dive into building habits and routines for long-term success..." },
-  { id: 2, title: "The Future of AI", snippet: "Discussion about where artificial intelligence is heading in the next decade..." },
-  { id: 3, title: "Greek Philosophy Thread", snippet: "Exploring Plato, Aristotle, and the roots of Western thought..." }
-]
-
-function goToThread(id) {
-  router.push(`/thread/${id}`)
+<script>
+export default {
+  name: 'CommentCard',
+  props: {
+    thread: {
+      type: Object,
+      default: () => ({
+        id: 1,
+        title: "Loading...",
+        description: "",
+        comments: 0,
+        createdAt: "",
+        upvotes: 0
+      })
+    }
+  },
+  methods: {
+    goToThread() {
+      this.$router.push({ name: 'thread', params: { id: this.thread.id } })
+    }
+  }
 }
 </script>
 
 
 <style scoped>
-.card {
+.thread-card {
   border: 1px solid #ccc;
   border-radius: 8px;
   padding: 16px;
-  margin: 16px;
-  background-color: #f9f9f9;
+  margin: 16px 0;
 }
-.card-title {
-  font-size: 20px;
-  color: #333;
+.thread {
+  font-size: 1.5em;
   margin-bottom: 8px;
 }
-.card-snippet {
-  font-size: 16px;
-  color: #666;
-  margin-bottom: 12px;
+.thread-info {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.9em;
+  color: #555;
 }
-.card-button {
-  background-color: #CC8A49;
-  color: white;
-  border: none;
-  padding: 10px 16px;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
+.thread-info p {
+  margin: 0;
 }
-.card-button:hover {
-  background-color: #b77a3f;
-} 
-
-
+.thread-info .comments,
+.thread-info .upvotes {
+  display: flex;
+  align-items: center;
+}
+.thread-info .created-at {
+  color: #888;
+}
+.thread-info .description {
+  flex: 1;
+  margin-right: 16px;
+}
+.thread-info .description::after {
+  content: '';
+  display: block;
+  height: 1px;
+  background: #eee;
+  margin-top: 8px;
+}
+.thread-info .description {
+  flex: 1;
+  margin-right: 16px;
+}
+.thread-info .description::after {
+  content: '';
+  display: block;
+  height: 1px;
+  background: #eee;
+  margin-top: 8px;
+}
+.thread-info .upvotes {
+  color: #f39c12;
+}
+.thread-info .comments {
+  color: #3498db;
+}
+.thread-info .created-at {
+  color: #7f8c8d;
+}
+.thread-info .upvotes {
+  color: #e74c3c;
+}
 </style>
