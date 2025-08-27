@@ -1,7 +1,7 @@
 <template>
   <div class="card">
     <h2 class="card-title">{{ thread.title }}</h2>
-    <p class="card-snippet">{{ thread.snippet }}</p>
+    <p class="card-snippet">{{ thread.preview  }}</p>
     <button class="card-button" @click="goToThread(thread.id)">Read More</button>
 
   </div>
@@ -10,18 +10,23 @@
 <script setup>
 import { useRouter } from "vue-router"
 
-const router = useRouter()
+defineProps({
+  thread: {
+    type: Object,
+    required: true,
+    title: String,
+    snippet: String,
+    id: Number
+  }
+})
 
-const threads = [
-  { id: 1, title: "How to Train Discipline", snippet: "A deep dive into building habits and routines for long-term success..." },
-  { id: 2, title: "The Future of AI", snippet: "Discussion about where artificial intelligence is heading in the next decade..." },
-  { id: 3, title: "Greek Philosophy Thread", snippet: "Exploring Plato, Aristotle, and the roots of Western thought..." }
-]
+const router = useRouter()
 
 function goToThread(id) {
   router.push(`/thread/${id}`)
 }
 </script>
+
 
 
 <style scoped>

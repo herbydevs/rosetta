@@ -8,6 +8,7 @@ import Settings from "./components/Settings.vue";
 import Main from "./components/Main.vue";
 import Profile from "./components/Profile.vue";
 import NotFound from "./components/NotFound.vue";
+import signup from "./components/signup.vue";
 
 const routes = [
     {path: "/", component: Main},
@@ -18,6 +19,7 @@ const routes = [
     {path: "/not-found", component: NotFound},
     // Catch-all route for 404 Not Found
     {path: "/:catchAll(.*)", redirect: "/not-found"},
+    {path: "/signup", component: signup}
     
     
 ];
