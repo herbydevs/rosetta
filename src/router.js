@@ -12,7 +12,7 @@ import signup from "./components/signup.vue";
 
 const routes = [
     {path: "/", component: Main},
-    {path: "/thread/:id", component: Thread, props: true},
+    {path: "/thread/:id", component: Thread, props: true, name: "thread"},
     {path: "/settings", component: Settings},
     {path: "/login", component: Login},
     {path: "/profile/:username", component: Profile, props: true},
