@@ -2,43 +2,30 @@
   <div class="layout">
     <!-- Header -->
     <header class="header">
-      <h1 class="logo">Rosetta</h1>
+      <h1 class="logo" @click="home()" style="cursor:pointer">Rosetta</h1>
       <input type="text" placeholder="Search discussions..." class="search-bar" />
       <button class="login-btn">Login</button>
     </header>
 
     <div class="content">
-      <!-- Sidebar -->
-      <aside class="sidebar">
-        <ul>
-          <li>📚 Literature</li>
-          <li>🏛 History</li>
-          <li>🎨 Art</li>
-          <li>💭 Philosophy</li>
-          <li>🗣 Languages</li>
-          <li>🔬 Science</li>
-          <li>🌍 Culture</li>
-          <li>🎭 Theater</li>
-          <li>🎶 Music</li>
-          <li>✍ Poetry</li>
-        </ul>
-      </aside>
-
-      <!-- Main Feed -->
+      <div class="sidebar-left">
+        <sidebars type="left" />
+      </div>
       <main class="feed">
+        <h2 v-if="selectedTopic" style="margin-bottom:16px;">{{ selectedTopic }}</h2>
         <CommentCard
           v-for="thread in threads"
-          :id="thread.id"
+          :key="thread.id"
           :thread="thread"
         />
       </main>
-
-      <!-- Right Sidebar -->
-      <aside class="rightbar">
-        <h3>Top Discussions</h3>
-        <p>1. Aristotle vs. Confucius</p>
-        <p>2. The future of classical studies</p>
-      </aside>
+      <div class="sidebar-right">
+        <sidebars
+          type="right"
+          :popular-topics="popularTopics"
+          @topic-click="handleTopicClick"
+        />
+      </div>
     </div>
   </div>
 </template>
@@ -46,19 +33,51 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import CommentCard from './CommentCard.vue'
+import sidebars from './sidebars.vue'
 import axios from 'axios'
+import router from '../router'
 
-// reactive array for threads
 const threads = ref([])
+const selectedTopic = ref(null)
+const popularTopics = ref([])
 
-onMounted(async () => {
+async function fetchThreads(topic = null) {
   try {
-    const response = await axios.get('http://localhost:3000/test')
-    threads.value = response.data // assuming API returns an array of thread objects
-    console.log('Fetched threads:', threads.value)
+    let url = 'http://localhost:3000/test'
+    if (topic) {
+      url = `http://localhost:3000/threads?topic=${encodeURIComponent(topic)}`
+    }
+    const response = await axios.get(url)
+    threads.value = response.data
   } catch (error) {
     console.error('Error fetching threads:', error)
   }
+}
+
+async function fetchPopularTopics() {
+  try {
+    const response = await axios.get('http://localhost:3000/popular-topics')
+    popularTopics.value = response.data
+  } catch (error) {
+    // fallback: use thread titles from /test if /popular-topics not available
+    popularTopics.value = threads.value.map(t => ({ title: t.title }))
+  }
+}
+
+function handleTopicClick(topic) {
+  selectedTopic.value = topic
+  fetchThreads(topic)
+}
+
+function home() {
+  router.push('/')
+  selectedTopic.value = null
+  fetchThreads()
+}
+
+onMounted(async () => {
+  await fetchThreads()
+  await fetchPopularTopics()
 })
 
 const handleReply = (commentId) => {
@@ -107,28 +126,37 @@ const handleReply = (commentId) => {
 /* Content grid */
 .content {
   display: grid;
-  grid-template-columns: 200px 1fr 250px;
-  flex: 1;
+  grid-template-columns: 200px 1fr 200px;
+  height: 100vh;
   background: #faf7f2;
 }
 
-.sidebar, .rightbar {
-  padding: 20px;
-  font-family: 'Inter', sans-serif;
+.feed {
+  grid-column: 2;
+  padding: 30px 24px;
+  overflow-y: auto;
+  background: #f5efe6;
+  min-height: 100vh;
+  box-sizing: border-box; 
 }
 
-.feed {
-  padding: 20px;
-  overflow-y: auto;
+.sidebar-left {
+  grid-column: 1;
+}
+
+.sidebar-right {
+  grid-column: 3;
 }
 
 /* Post cards */
 .post-card {
-  background: white;
-  padding: 15px;
-  margin-bottom: 15px;
-  border-radius: 10px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  background: #fff;
+  padding: 20px;
+  margin-bottom: 24px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .post-card h2 {

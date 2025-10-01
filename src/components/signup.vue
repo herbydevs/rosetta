@@ -20,6 +20,45 @@
 </template>
 
 
+<script>
+ import { ref } from 'vue' 
+
+ let signup = async () => {
+    try {
+        const response = await fetch('http://localhost:3000/signup', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                username: username.value,
+                password: password.value,
+                email: email.value
+            })
+        })
+
+        const data = await response.json()
+
+        if(response.ok){
+            console.log('Signup successful:', data.user)
+            error.value = ''
+            // Call the parent component's method to handle post-signup actions
+            onSignupSuccess(data.user)
+        } else {
+            error.value = data.message
+        }
+    } catch (err) {
+        error.value = 'Network error'
+        console.error(err)
+    }
+ }
+    const username = ref('')
+    const password = ref('')
+    const email = ref('')
+    const error = ref('')
+
+</script>
+
 <style>
     .signup-container {
         display: flex;

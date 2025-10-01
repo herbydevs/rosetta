@@ -1,0 +1,13 @@
+START
+    PRINT "ENTER MATH GRADE"
+    READ math_grade
+    
+    PRINT "ENTER ENGLISH GRADE"
+    READ english_grade
+
+    PRINT "ENTER IT GRADE"
+    read it_grade
+
+    final = math_grade + english_grade + it_grade / 3
+    PRINT "Average grade is", final
+STOP

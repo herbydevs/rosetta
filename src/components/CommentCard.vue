@@ -1,9 +1,19 @@
 <template>
-  <div class="card">
-    <h2 class="card-title">{{ thread.title }}</h2>
-    <p class="card-snippet">{{ thread.snippet }}</p>
-    <button class="card-button" @click="goToThread(thread.id)">Read More</button>
-
+  <div
+    class="post-card"
+    @click="goToThread(thread)"
+    style="cursor: pointer"
+  >
+    <h2>{{ thread.title }}</h2>
+    <p>{{ thread.preview }}</p>
+    <div class="post-meta">
+      <span
+        @click.stop="senderProfile(thread.sender)"
+        style="color: #CC8A49; cursor: pointer; text-decoration: underline;"
+      >
+        By {{ thread.sender }}
+      </span>
+    </div>
   </div>
 </template>
 
@@ -12,15 +22,21 @@ import { useRouter } from "vue-router"
 
 const router = useRouter()
 
-const threads = [
-  { id: 1, title: "How to Train Discipline", snippet: "A deep dive into building habits and routines for long-term success..." },
-  { id: 2, title: "The Future of AI", snippet: "Discussion about where artificial intelligence is heading in the next decade..." },
-  { id: 3, title: "Greek Philosophy Thread", snippet: "Exploring Plato, Aristotle, and the roots of Western thought..." }
-]
-
-function goToThread(id) {
-  router.push(`/thread/${id}`)
+function goToThread(thread) {
+  router.push(`/thread/${thread.id}`)
 }
+
+function senderProfile(sender) {
+  // Use senderId if available
+  router.push(`/profile/${thread.sender}/${thread.senderId}`)
+}
+
+defineProps({
+  thread: {
+    type: Object,
+    required: true
+  }
+})
 </script>
 
 
