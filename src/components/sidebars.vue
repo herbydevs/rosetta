@@ -35,23 +35,12 @@
 
 <script setup>
 const props = defineProps({
-  type: {
-    type: String,
-    default: 'left'
-  },
-  popularTopics: {
-    type: Array,
-    default: () => []
-  }
+  type: { type: String, default: 'left' },
+  popularTopics: { type: Array, default: () => [] },
+  trendingTopics: { type: Array, default: () => [] }
 })
 
-const trendingTopics = [
-  { title: 'The Renaissance' },
-  { title: 'Existentialism in Modern Times' },
-  { title: 'The Evolution of Language' },
-  { title: 'Impressionism vs Realism' },
-  { title: 'The Role of Music in Society' }
-]
+
 </script>
 
 <style>

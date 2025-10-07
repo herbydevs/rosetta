@@ -23,6 +23,7 @@
         <sidebars
           type="right"
           :popular-topics="popularTopics"
+          :trending-topics="trendingTopics"
           @topic-click="handleTopicClick"
         />
       </div>
@@ -61,6 +62,16 @@ async function fetchPopularTopics() {
   } catch (error) {
     // fallback: use thread titles from /test if /popular-topics not available
     popularTopics.value = threads.value.map(t => ({ title: t.title }))
+  }
+}
+
+async function getTrendingTopics() {
+  try {
+    const response = await axios.get('http://localhost:3000/trending-topics')
+    trendingTopics.value = response.data
+  } catch (error) {
+    console.error('Error fetching trending topics:', error)
+    return []
   }
 }
 
