@@ -4,7 +4,7 @@
     <header class="header">
       <h1 class="logo" @click="home()" style="cursor:pointer">Rosetta</h1>
       <input type="text" placeholder="Search discussions..." class="search-bar" />
-      <button class="login-btn">Login</button>
+      <button class="login-btn" @click="router.push('/login')">Login</button>
     </header>
 
     <div class="content">
@@ -41,6 +41,7 @@ import router from '../router'
 const threads = ref([])
 const selectedTopic = ref(null)
 const popularTopics = ref([])
+const trendingTopics = ref([])
 
 async function fetchThreads(topic = null) {
   try {
@@ -55,6 +56,9 @@ async function fetchThreads(topic = null) {
   }
 }
 
+
+
+
 async function fetchPopularTopics() {
   try {
     const response = await axios.get('http://localhost:3000/popular-topics')
@@ -68,6 +72,7 @@ async function fetchPopularTopics() {
 async function getTrendingTopics() {
   try {
     const response = await axios.get('http://localhost:3000/trending-topics')
+    console.log('Trending topics response:', response.data)
     trendingTopics.value = response.data
   } catch (error) {
     console.error('Error fetching trending topics:', error)
@@ -89,6 +94,7 @@ function home() {
 onMounted(async () => {
   await fetchThreads()
   await fetchPopularTopics()
+  await getTrendingTopics()
 })
 
 const handleReply = (commentId) => {

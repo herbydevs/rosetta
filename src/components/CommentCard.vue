@@ -5,7 +5,7 @@
     style="cursor: pointer"
   >
     <h2>{{ thread.title }}</h2>
-    <p>{{ thread.preview }}</p>
+    <p>{{ thread.preview}}</p>
     <div class="post-meta">
       <span
         @click.stop="senderProfile(thread.sender)"
@@ -23,8 +23,12 @@ import { useRouter } from "vue-router"
 const router = useRouter()
 
 function goToThread(thread) {
-  router.push(`/thread/${thread.id}`)
+  router.push({
+    path: `/thread/${thread.id}`,
+    state: { thread }  // must be inside the route object
+  });
 }
+
 
 function senderProfile(sender) {
   // Use senderId if available

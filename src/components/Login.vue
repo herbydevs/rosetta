@@ -12,6 +12,14 @@
       </div>
       <button type="submit">Login</button>
       <p v-if="error" style="color:red">{{ error }}</p>
+      <p style="margin-top:12px; font-size:14px;">
+        Don't have an account? 
+        <a href="/signup" style="color:#CC8A49; text-decoration:underline;">Sign up here</a>
+      </p>
+      <p style="margin-top:12px; font-size:14px;">
+        Forgot your password? 
+        <a href="/reset" style="color:#CC8A49; text-decoration:underline;">Reset it here</a>
+      </p>
     </form>
   </div>
 </template>
